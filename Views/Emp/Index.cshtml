@@ -1,0 +1,35 @@
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Kendo UI Grid</h2>
+
+@(
+
+ Html.Kendo().Grid<KendoGridDemo.Models.Tbl_Emp>()
+.Name("GridEmp")
+.Columns(
+column => {
+    column.Bound(e => e.Id).Title("ID").Groupable(false).Width(50);
+    column.Bound(e => e.Name).Title("Name").Groupable(false);
+    column.Bound(e => e.DOB).Title("DOB").ClientTemplate("#= kendo.format('{0:dd-MMM-yyyy}',kendo.parseDate(DOB)) #");
+    column.Bound(e => e.EMail).Title("E-Mail").Groupable(false);
+    column.Bound(e => e.Address).Title("Full Address").Groupable(false).ClientTemplate("Address : #=Address# <br/> City : #=City# <br/> State : #=State# <br/> Zip Code : #=ZipCode#");
+}
+)
+.Groupable()
+.Filterable()
+.Selectable()
+.Pageable(
+page=>page.Refresh(true)
+    .PageSizes(true)
+    .PreviousNext(true)
+)
+.Reorderable(reorder=>reorder.Columns(true))
+.DataSource(
+datasource=>datasource.Ajax()
+    .PageSize(10)
+    .Read(read=>read.Action("GetData","Emp"))
+)
+
+)
